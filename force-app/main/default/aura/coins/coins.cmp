@@ -1,0 +1,11 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="CoinListCallout">
+  <aura:attribute name="coins" type="Object" />
+  <aura:attribute name="columns" type="List" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <lightning:datatable
+    keyField="id"
+    data="{!v.coins}"
+    columns="{!v.columns}"
+    hideCheckboxColumn="true" />
+</aura:component>	
