@@ -2,14 +2,29 @@
   implements="forceCommunity:availableForAllPageTypes"
   controller="CoinListCallout"
 >
-  <aura:attribute name="coins" type="List" />
-  <aura:attribute name="columns" type="List" />
+  <aura:attribute name="coin" type="String" />
+  <aura:attribute name="searchResult" type="Object" />
+  <aura:attribute name="portfolios" type="Portfolio__c" />
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
-  <lightning:datatable
-    keyField="id"
-    data="{!v.coins}"
-    columns="{!v.columns}"
-    hideCheckboxColumn="true"
-  />
+  <div class="row">
+    <h2 class="header">Coin Name</h2>
+    <lightning:input
+      name="coinName"
+      value="{!v.coin}"
+      placeholder="search a coin..."
+    />
+  </div>
+  <br />
+  <div class="row">
+    <lightning:button
+      variant="brand"
+      label="Search"
+      onclick="{!c.handleSearch}"
+    />
+  </div>
+  <br />
+
+  <c:searchResult searchResult="{!v.searchResult}" />
+  <c:portfolios portfolios="{!v.portfolios}" />
 </aura:component>

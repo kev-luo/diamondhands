@@ -1,0 +1,34 @@
+<aura:component>
+  <aura:attribute name="searchResult" type="Object" />
+  <aura:attribute name="isModalOpen" type="boolean" default="false" />
+  <aura:if isTrue="{! v.searchResult != null}">
+    <lightning:card title="{!v.searchResult.name}">
+      <aura:set attribute="actions">
+        <lightning:button
+          variant="brand"
+          label="Add to Portfolio"
+          onclick="{!c.openModal}"
+        />
+      </aura:set>
+      <!-- display current price -->
+      <p class="slds-p-horizontal_small">
+        <lightning:formattedNumber
+          value="{!v.searchResult.market_data.current_price.usd}"
+          style="currency"
+          currencyCode="USD"
+        />
+      </p>
+      <!-- display 24-hour price change -->
+      <p class="slds-p-horizontal_small">
+        <lightning:formattedNumber
+          value="{!v.searchResult.market_data.price_change_24h_in_currency.usd}"
+          style="currency"
+          currencyCode="USD"
+        />
+      </p>
+      <!-- display coin logo -->
+      <img src="{!v.searchResult.image.small}" />
+    </lightning:card>
+    <c:modalForm isModalOpen="{!v.isModalOpen}" coin="{!v.searchResult}" />
+  </aura:if>
+</aura:component>
