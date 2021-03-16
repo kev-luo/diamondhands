@@ -1,12 +1,15 @@
 <aura:component>
-  <aura:attribute name="portfolios" type="Portfolio__c" />
+  <aura:attribute name="portfolios" type="Portfolio__c[]" />
   <aura:attribute name="columns" type="List" />
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
-  <lightning:datatable
-    keyField="id"
-    data="{!v.portfolios.Crypto_Orders__r}"
-    columns="{!v.columns}"
-    hideCheckboxColumn="true"
-  />
+  <aura:iteration items="{!v.portfolios}" var="portfolio">
+    <h2>{!portfolio.Name}</h2>
+    <lightning:datatable
+      keyField="id"
+      data="{!portfolio.Crypto_Orders__r}"
+      columns="{!v.columns}"
+      hideCheckboxColumn="true"
+    />
+  </aura:iteration>
 </aura:component>

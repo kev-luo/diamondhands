@@ -19,13 +19,26 @@
         />
       </p>
       <!-- display 24-hour price change -->
-      <p class="slds-p-horizontal_small">
-        <lightning:formattedNumber
-          value="{!v.searchResult.market_data.price_change_24h_in_currency.usd}"
-          style="currency"
-          currencyCode="USD"
-        />
-      </p>
+      <aura:if
+        isTrue="{!v.searchResult.market_data.price_change_24h_in_currency.usd lt 0}"
+      >
+        <p class="slds-text-color_error slds-p-horizontal_small">
+          <lightning:formattedNumber
+            value="{!v.searchResult.market_data.price_change_24h_in_currency.usd}"
+            style="currency"
+            currencyCode="USD"
+          />
+        </p>
+        <aura:set attribute="else">
+          <p class="slds-text-color_success slds-p-horizontal_small">
+            <lightning:formattedNumber
+              value="{!v.searchResult.market_data.price_change_24h_in_currency.usd}"
+              style="currency"
+              currencyCode="USD"
+            />
+          </p>
+        </aura:set>
+      </aura:if>
       <!-- display coin logo -->
       <img src="{!v.searchResult.image.small}" />
     </lightning:card>

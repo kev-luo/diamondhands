@@ -13,8 +13,8 @@
   retrievePortfolios: function (component) {
     let action = component.get("c.retrievePortfolios");
     action.setCallback(this, function (response) {
-      component.set("v.portfolios", response.getReturnValue()[0]);
-      console.log(response.getReturnValue()[0]);
+      component.set("v.portfolios", response.getReturnValue());
+      console.log(response.getReturnValue());
     });
     $A.enqueueAction(action);
   }

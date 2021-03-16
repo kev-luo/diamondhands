@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow
+  xmlns="http://soap.sforce.com/2006/04/metadata"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+    <apiVersion>51.0</apiVersion>
+    <dynamicChoiceSets>
+        <name>Case_Origin_Picklist</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true" />
+        <object xsi:nil="true" />
+        <picklistField>Origin</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>Case_Type_Picklist</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true" />
+        <object xsi:nil="true" />
+        <picklistField>Type</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <formulas>
+        <name>User_First_Name_Formula</name>
+        <dataType>String</dataType>
+        <expression>{!$User.FirstName}</expression>
+    </formulas>
+    <interviewLabel>OrderCase {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>OrderCase</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <name>Create_Case_Record</name>
+        <label>Create Case Record</label>
+        <locationX>717</locationX>
+        <locationY>609</locationY>
+        <connector>
+            <targetReference>Case_Lookup</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ContactId</field>
+            <value>
+                <elementReference>curContact.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>Case_Details_Input</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Origin</field>
+            <value>
+                <elementReference>Case_Origin_Picklist</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>Case_Subject_Input</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <elementReference>Case_Type_Picklist</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Case_Lookup</name>
+        <label>Case Lookup</label>
+        <locationX>717</locationX>
+        <locationY>461</locationY>
+        <assignNullValuesIfNoRecordsFound
+    >true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Case_Created_Screen</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Create_Case_Record</elementReference>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputAssignments>
+            <assignToReference>case.CaseNumber</assignToReference>
+            <field>CaseNumber</field>
+        </outputAssignments>
+    </recordLookups>
+    <screens>
+        <name>Case_Created_Screen</name>
+        <label>Case Created</label>
+        <locationX>717</locationX>
+        <locationY>280</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Case_Created_Title</name>
+            <fieldText
+      >&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;Case Created&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Case_Created_Script</name>
+            <extensionName>lbpm:flowScript</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>script</name>
+                <value>
+                    <elementReference
+          >Case_Created_Script_Template</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>case.CaseNumber</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Case_Details_Screen</name>
+        <label>Get Case Details</label>
+        <locationX>573</locationX>
+        <locationY>608</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Create_Case_Record</targetReference>
+        </connector>
+        <fields>
+            <name>Case_Details_Title</name>
+            <fieldText
+      >&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;Get Case Details&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Case_Type_Input</name>
+            <choiceReferences>Case_Type_Picklist</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Case Type</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Case_Origin_Input</name>
+            <choiceReferences>Case_Origin_Picklist</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Case Origin</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Case_Subject_Input</name>
+            <dataType>String</dataType>
+            <fieldText>Case Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Case_Details_Input</name>
+            <fieldText>Case Details</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <stages>
+        <name>Case_Details_Stage</name>
+        <isActive>true</isActive>
+        <label>Get Case Details</label>
+        <stageOrder>20</stageOrder>
+    </stages>
+    <stages>
+        <name>Contact_Details_Stage</name>
+        <isActive>true</isActive>
+        <label>Confirm Customer Details</label>
+        <stageOrder>10</stageOrder>
+    </stages>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Case_Details_Screen</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
+    <textTemplates>
+        <name>Case_Created_Script_Template</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text
+    >Your case (#{!case.CaseNumber}) is created! We’ll be in touch with next steps.</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Case_Details_Script_Template</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>What can I help you with today?</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Contact_Error_Title_Template</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text
+    >&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 20px; color: rgb(194, 57, 52);&quot;&gt;Contact information is incorrect&lt;/span&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Customer_Name_Script_Template</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text
+    >Hello, this is {!User_First_Name_Formula}. Can you please provide your first and last name?</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Email_Title_Template</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Email Address</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Flow_Title_Text_Template</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Create a Case</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Phone_Title_Template</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Phone Number</text>
+    </textTemplates>
+    <variables>
+        <name>case</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>contact</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>curContact</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+</Flow>

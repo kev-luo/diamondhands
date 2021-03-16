@@ -1,17 +1,10 @@
 ({
-  searchHelper: function (component, searchText) {
-    let action = component.get("c.fetchLookUpValues");
-    action.setParams({
-      searchKeyWord: searchText
-    });
-    action.setCallback(this, function (response) {
-      if (response.getState() === "SUCCESS") {
-        let returnList = response.getReturnValue();
-        if (returnList.length > 0) {
-          component.set("v.listOfSearchRecords", returnList);
-        }
-      }
-    });
-    $A.enqueueAction(action);
+  setMarketPrice: function (component, event) {
+    let fields = event.getParam("fields");
+    fields.Market_Price__c = component.get(
+      "v.coin.market_data.current_price.usd"
+    );
+    component.find("orderForm").submit(fields);
+    component.set("v.isModalOpen", false);
   }
 });

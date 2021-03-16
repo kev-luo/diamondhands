@@ -3,7 +3,6 @@
   <aura:attribute name="coin" type="Object" />
   <aura:attribute name="quantity" type="decimal" default="0" />
   <aura:attribute name="portfolio" type="string" />
-  <aura:attribute name="listOfSearchRecords" type="List" />
   <aura:if isTrue="{!v.isModalOpen}">
     <section
       role="dialog"
