@@ -2,7 +2,11 @@
   <aura:attribute name="searchResult" type="Object" />
   <aura:attribute name="isModalOpen" type="boolean" default="false" />
   <aura:if isTrue="{! v.searchResult != null}">
-    <lightning:card title="{!v.searchResult.name}">
+    <lightning:card
+      title="{!v.searchResult.name}"
+      variant="Narrow"
+      class="searchResultCard"
+    >
       <aura:set attribute="actions">
         <lightning:button
           variant="brand"
@@ -12,6 +16,7 @@
       </aura:set>
       <!-- display current price -->
       <p class="slds-p-horizontal_small">
+        Market Price:
         <lightning:formattedNumber
           value="{!v.searchResult.market_data.current_price.usd}"
           style="currency"
@@ -22,7 +27,10 @@
       <aura:if
         isTrue="{!v.searchResult.market_data.price_change_24h_in_currency.usd lt 0}"
       >
-        <p class="slds-text-color_error slds-p-horizontal_small">
+        <p class="slds-text-color_error">
+          <span class="slds-text-color_default slds-p-left_small"
+            >24 Hour Change:
+          </span>
           <lightning:formattedNumber
             value="{!v.searchResult.market_data.price_change_24h_in_currency.usd}"
             style="currency"
@@ -30,7 +38,10 @@
           />
         </p>
         <aura:set attribute="else">
-          <p class="slds-text-color_success slds-p-horizontal_small">
+          <p class="slds-text-color_success">
+            <span class="slds-text-color_default slds-p-left_small"
+              >24 Hour Change:
+            </span>
             <lightning:formattedNumber
               value="{!v.searchResult.market_data.price_change_24h_in_currency.usd}"
               style="currency"
@@ -40,7 +51,10 @@
         </aura:set>
       </aura:if>
       <!-- display coin logo -->
-      <img src="{!v.searchResult.image.small}" />
+      <img
+        class="slds-p-left_small slds-p-top_x-small"
+        src="{!v.searchResult.image.small}"
+      />
     </lightning:card>
     <c:modalForm isModalOpen="{!v.isModalOpen}" coin="{!v.searchResult}" />
   </aura:if>

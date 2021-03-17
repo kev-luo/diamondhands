@@ -20,7 +20,7 @@ public with sharing class CoinListCallout {
         (
           SELECT Id, CreatedDate, Name__c, Market_Price__c, Quantity__c
           FROM Crypto_Orders__r
-          ORDER BY CreatedOn__c DESC
+          ORDER BY CreatedDate DESC
         )
       FROM Portfolio__c
     ];
